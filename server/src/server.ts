@@ -1,12 +1,13 @@
-import express from "express";
+import app from "./app";
+import mongoose from "mongoose";
+import env from "./util/validateEnv";
+mongoose.set("strictQuery", true);
 
-const app = express();
-const port = 3001;
-
-app.get("/", (req, res) => {
-  res.send("HELLO WORLD FROM TYPESCRIPT");
-});
-
-app.listen(port, () => {
-  console.log(`Server running on ${port}`);
-});
+mongoose
+  .connect(env.MONGO_URL)
+  .then(() => {
+    app.listen(env.PORT, () => {
+      console.log(`Server running on ${env.PORT}`);
+    });
+  })
+  .catch(console.error);
